@@ -73,7 +73,7 @@ CADEIA         : '"' ( ~["\r\n\\] | '\\' . )* '"' ;
 // WS: Ignora espaços, tabs e quebras de linha enviando para o canal skip
 WS             : [ \t\r\n]+ -> skip ;
 // COMENTARIO: Ignora blocos entre { } de forma não-gulosa (.*?)
-COMENTARIO     : '{' .*? '}' -> skip ;
+COMENTARIO : '{' ( ~'}' )* '}' -> skip ;
 
 /* * GRUPO 6: TRATAMENTO DE ERROS LÉXICOS 
  * Estas regras devem ser as ÚLTIMAS. Se nenhum token acima casar,
@@ -82,6 +82,7 @@ COMENTARIO     : '{' .*? '}' -> skip ;
 // ERRO_CADEIA: Pega uma aspa que não foi fechada até o fim da linha/arquivo
 ERRO_CADEIA    : '"' ( ~["\r\n\\] | '\\' . )* ; 
 // ERRO_COMENTARIO: Pega uma chave que não foi fechada
-ERRO_COMENTARIO: '{' ( ~'}' )* ;
+ERRO_COMENTARIO : '{' ( ~'}' )* ;
+
 // ERRO_SIMBOLO: Qualquer caractere único não previsto nas regras acima
 ERRO_SIMBOLO   : . ;
